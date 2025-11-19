@@ -1,8 +1,12 @@
 import { GoogleGenAI, Chat, GenerateContentResponse } from "@google/genai";
 
 // Initialize the Gemini Client
-// The API key must be provided via the environment variable process.env.API_KEY
-const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+// The API key must be provided via the environment variable VITE_GEMINI_API_KEY
+const apiKey = import.meta.env.VITE_GEMINI_API_KEY || import.meta.env.GEMINI_API_KEY;
+if (!apiKey) {
+  console.error('GEMINI_API_KEY is not set. Please set VITE_GEMINI_API_KEY in your environment variables.');
+}
+const ai = new GoogleGenAI({ apiKey: apiKey || '' });
 
 export const createDesignChat = (): Chat => {
   return ai.chats.create({
